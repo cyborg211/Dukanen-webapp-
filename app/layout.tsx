@@ -14,12 +14,14 @@ export default function RootLayout({children}:{children:React.ReactNode}){
         <nav className="desktop-nav">
           <Link href="/marketplace">Browse</Link>
           <Link href="/#categories">Categories</Link>
+          <Link href="/seller/dashboard">Seller Dashboard</Link>
+          <Link href="/auth">Sign in</Link>
           <Link href="/sell" className="sell-link">Sell</Link>
         </nav>
       </div>
     </header>
     <main>{children}</main>
     <footer className="footer"><div className="container"><b>DUKANEN دكانين</b><p>Buy. Sell. Discover. Built for local commerce and African growth.</p></div></footer>
-    <nav className="mobile-nav"><Link href="/">Home</Link><Link href="/marketplace">Browse</Link><Link href="/sell" className="mobile-sell">Sell</Link><Link href="/marketplace">Favorites</Link><Link href="/">Account</Link></nav>
+    <nav className="mobile-nav"><Link href="/">Home</Link><Link href="/marketplace">Browse</Link><Link href="/sell" className="mobile-sell">Sell</Link><Link href="/marketplace">Favorites</Link><Link href="/auth">Account</Link></nav>
   </body></html>
 }
