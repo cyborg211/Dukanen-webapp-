@@ -1,4 +1,4 @@
-# DukanEN (دكانين)
+# Dukanen (دكانين)
 
 **Dukanen** is a mobile-first, multi-vendor marketplace built for South Sudan, with a product architecture designed to support future expansion across East Africa.
 
