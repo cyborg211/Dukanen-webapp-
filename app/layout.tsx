@@ -1,5 +1,6 @@
 import './globals.css';
 import './sell.css';
+import './step8.css';
 import Link from 'next/link';
 
 export const metadata = {
