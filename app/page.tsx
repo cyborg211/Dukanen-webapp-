@@ -1,3 +1,4 @@
+import './home.css';
 import Link from 'next/link';
 import ProductCard from '@/components/ProductCard';
 import {categories,products,featuredSellers} from '@/lib/data';
@@ -74,7 +75,7 @@ export default function Home(){
     <section className="home-section">
       <div className="container">
         <div className="section-head"><div><span className="section-kicker">Local businesses</span><h2>Verified & featured sellers</h2><p>Discover growing businesses and trusted local sellers.</p></div></div>
-        <div className="seller-grid">{featuredSellers.slice(0,3).map((s,i)=><div className="seller-card" key={s.name}><div className="seller-avatar">{s.name.slice(0,1)}</div><div><div className="seller-title-row"><h3>{s.name}</h3><span className="verified-badge">✓ Verified</span></div><p>{s.category} · {s.location}</p><Link href="/marketplace" className="seller-link">View listings →</Link></div></div>)}</div>
+        <div className="seller-grid">{featuredSellers.slice(0,3).map((s)=><div className="seller-card" key={s.name}><div className="seller-avatar">{s.name.slice(0,1)}</div><div><div className="seller-title-row"><h3>{s.name}</h3><span className="verified-badge">✓ Verified</span></div><p>{s.category} · {s.location}</p><Link href="/marketplace" className="seller-link">View listings →</Link></div></div>)}</div>
       </div>
     </section>
 
