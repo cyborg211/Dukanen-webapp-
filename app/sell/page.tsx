@@ -1,5 +1,6 @@
 import {createClient} from '@/lib/supabase/server';
 import {createListing} from './actions';
+import ImageUploader from './image-uploader';
 
 export const dynamic='force-dynamic';
 
@@ -23,15 +24,8 @@ export default async function SellPage({searchParams}:{searchParams?:{error?:str
 
       <form action={createListing} className="sell-form">
         <section className="sell-card">
-          <div className="sell-step-head"><span className="sell-step">1</span><div><h2>Photos</h2><p>Add clear photos. The first photo will become the cover once image storage is enabled.</p></div></div>
-          <label className="photo-drop" htmlFor="photos">
-            <span className="photo-icon">▧</span>
-            <strong>Add photos</strong>
-            <span>Up to 10 images · JPG, PNG or WEBP</span>
-          </label>
-          <input id="photos" name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple className="visually-hidden"/>
-          <div className="photo-slots" aria-hidden="true"><span>Cover</span><span>+</span><span>+</span><span>+</span></div>
-          <p className="field-note">Photo selection is prepared in the UI; persistent image upload will be connected to the proven Supabase storage flow before production.</p>
+          <div className="sell-step-head"><span className="sell-step">1</span><div><h2>Photos</h2><p>Add clear photos. The first image becomes the cover.</p></div></div>
+          <ImageUploader/>
         </section>
 
         <section className="sell-card">
@@ -49,7 +43,7 @@ export default async function SellPage({searchParams}:{searchParams?:{error?:str
 
         <section className="sell-card preview-card">
           <div className="sell-step-head"><span className="sell-step">3</span><div><h2>Review & publish</h2><p>Make sure the details are accurate before your listing goes live.</p></div></div>
-          <div className="publish-checks"><span>✓ Clear title</span><span>✓ Price in SSP</span><span>✓ Correct category</span><span>✓ Accurate location</span></div>
+          <div className="publish-checks"><span>✓ Clear photos</span><span>✓ Price in SSP</span><span>✓ Correct category</span><span>✓ Accurate location</span></div>
           <div className="sell-actions"><a href="/marketplace" className="secondary">Cancel</a><button type="submit" className="primary publish-btn">Publish Listing</button></div>
           <p className="field-note">By publishing, you confirm the listing is accurate and complies with Dukanen marketplace rules.</p>
         </section>
