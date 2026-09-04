@@ -15,12 +15,12 @@ export default async function Marketplace({searchParams}:{searchParams?:{q?:stri
 
   if(searchParams?.q) query=query.ilike('title',`%${searchParams.q}%`);
   if(searchParams?.category){
-    const {data:cat}=await supabase.from('categories').select('id').eq('name',searchParams.category).maybeSingle();
+    const {data:cat}=await supabase.from('categories').select('id').eq('name',searchParams.category).eq('active',true).maybeSingle();
     if(cat?.id) query=query.eq('category_id',cat.id);
   }
 
   const {data}=await query;
-  const {data:catRows}=await supabase.from('categories').select('name,slug').order('name');
+  const {data:catRows}=await supabase.from('categories').select('name,slug').eq('active',true).order('name');
   const live=(data||[]).map((p:any)=>{
     const images=(p.product_images||[]).sort((a:any,b:any)=>a.sort_order-b.sort_order);
     return {
