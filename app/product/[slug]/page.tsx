@@ -35,7 +35,7 @@ export default async function ProductPage({params}:{params:{slug:string}}){
     .maybeSingle();
 
   if(data?.id){
-    await supabase.rpc('increment_product_views',{product_uuid:data.id});
+    await supabase.from('product_view_events').insert({product_id:data.id,viewer_id:user?.id||null});
   }
 
   const demo=demoProducts.find(p=>p.slug===params.slug);
