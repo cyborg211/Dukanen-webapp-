@@ -2,15 +2,19 @@
 
 import { FormEvent, useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 export default function AuthPage() {
+  const searchParams = useSearchParams()
   const [mode, setMode] = useState<'login' | 'register'>('login')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const requested = searchParams.get('next') || '/marketplace'
+  const next = requested.startsWith('/') && !requested.startsWith('//') ? requested : '/marketplace'
 
   async function submit(event: FormEvent) {
     event.preventDefault()
@@ -21,17 +25,18 @@ export default function AuthPage() {
       const supabase = createClient()
 
       if (mode === 'register') {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { data: { name } },
+          options: { data: { name }, emailRedirectTo: `${window.location.origin}${next}` },
         })
         if (error) throw error
-        setMessage('Account created. Check your email if confirmation is enabled.')
+        if (data.session) window.location.href = next
+        else setMessage('Account created. Check your email if confirmation is enabled.')
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password })
         if (error) throw error
-        window.location.href = '/marketplace'
+        window.location.href = next
       }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Unable to continue. Please try again.')
