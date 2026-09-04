@@ -9,7 +9,7 @@ const conditions=['New','Used','Refurbished'];
 
 export default async function SellPage({searchParams}:{searchParams?:{error?:string}}){
   const supabase=createClient();
-  const {data:categories}=await supabase.from('categories').select('name').order('name');
+  const {data:categories}=await supabase.from('categories').select('name').eq('active',true).order('name');
   const error=searchParams?.error;
 
   return <div className="sell-page">
