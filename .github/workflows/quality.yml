@@ -24,3 +24,18 @@ jobs:
         run: npx tsc --noEmit
       - name: Production build
         run: npm run build
+      - name: Package validated preview source
+        uses: actions/upload-artifact@v4
+        with:
+          name: dukanen-preview-source
+          path: |
+            .env.example
+            package.json
+            tsconfig.json
+            next-env.d.ts
+            middleware.ts
+            app/**
+            components/**
+            lib/**
+          if-no-files-found: error
+          retention-days: 1
