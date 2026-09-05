@@ -4,7 +4,7 @@ import './step8.css';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Dukanen Marketplace — Buy. Sell. Connect.',
+  title: {default:'Dukanen Marketplace — Buy. Sell. Connect.',template:'%s | Dukanen Marketplace'},
   description: 'A mobile-first local marketplace for products, services and opportunities across South Sudan.',
   metadataBase: new URL('https://dukanen.online'),
   alternates: { canonical: '/' },
@@ -16,7 +16,10 @@ export const metadata = {
     locale: 'en_SS',
     type: 'website',
   },
+  twitter:{card:'summary_large_image',title:'Dukanen Marketplace',description:'Buy. Sell. Connect. Built for local commerce across South Sudan.'},
 };
+
+export const viewport={themeColor:'#00A86B',colorScheme:'light'};
 
 function Icon({name}:{name:'home'|'search'|'plus'|'message'|'user'|'heart'}){
   const common={width:22,height:22,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round' as const,strokeLinejoin:'round' as const,'aria-hidden':true};
@@ -31,10 +34,7 @@ function Icon({name}:{name:'home'|'search'|'plus'|'message'|'user'|'heart'}){
 function BrandMark(){
   return <span className="brand-lockup" aria-label="Dukanen Marketplace">
     <span className="brand-icon" aria-hidden="true">
-      <svg viewBox="0 0 64 64" role="img">
-        <path fill="#fff" d="M14 17h36l-4.4 13.2c-.9 2.6-3.3 4.3-6 4.3-2.5 0-4.8-1.5-5.8-3.8-1 2.3-3.3 3.8-5.8 3.8s-4.8-1.5-5.8-3.8c-1 2.3-3.3 3.8-5.8 3.8-2.7 0-5.1-1.7-6-4.3L14 17Z"/>
-        <path fill="#fff" d="M18 35h28v17h-9V40H27v12h-9V35Z"/>
-      </svg>
+      <svg viewBox="0 0 64 64" role="img"><path fill="#fff" d="M14 17h36l-4.4 13.2c-.9 2.6-3.3 4.3-6 4.3-2.5 0-4.8-1.5-5.8-3.8-1 2.3-3.3 3.8-5.8 3.8s-4.8-1.5-5.8-3.8c-1 2.3-3.3 3.8-5.8 3.8-2.7 0-5.1-1.7-6-4.3L14 17Z"/><path fill="#fff" d="M18 35h28v17h-9V40H27v12h-9V35Z"/></svg>
     </span>
     <span className="brand-copy"><strong>Dukanen</strong><span>Marketplace</span></span>
   </span>
@@ -42,27 +42,19 @@ function BrandMark(){
 
 export default function RootLayout({children}:{children:React.ReactNode}){
   return <html lang="en"><body>
+    <a className="skip-link" href="#main-content">Skip to main content</a>
     <header className="site-header">
       <div className="container nav-wrap">
         <Link href="/" aria-label="Dukanen Marketplace home"><BrandMark/></Link>
         <nav className="desktop-nav" aria-label="Primary navigation">
-          <Link href="/marketplace">Browse</Link>
-          <Link href="/#categories">Categories</Link>
-          <Link href="/messages">Messages</Link>
-          <Link href="/favorites">Favorites</Link>
-          <Link href="/profile">Profile</Link>
-          <Link href="/sell" className="sell-link"><Icon name="plus"/> <span>Sell</span></Link>
+          <Link href="/marketplace">Browse</Link><Link href="/#categories">Categories</Link><Link href="/messages">Messages</Link><Link href="/favorites">Favorites</Link><Link href="/profile">Profile</Link><Link href="/sell" className="sell-link"><Icon name="plus"/> <span>Sell</span></Link>
         </nav>
       </div>
     </header>
-    <main>{children}</main>
+    <main id="main-content">{children}</main>
     <footer className="footer"><div className="container"><div className="footer-brand"><span className="footer-dot"/>Dukanen Marketplace</div><p>Buy. Sell. Connect. Built for local commerce across South Sudan.</p></div></footer>
     <nav className="mobile-nav" aria-label="Mobile navigation">
-      <Link href="/" className="mobile-nav-item"><Icon name="home"/><span>Home</span></Link>
-      <Link href="/marketplace" className="mobile-nav-item"><Icon name="search"/><span>Explore</span></Link>
-      <Link href="/sell" className="mobile-sell" aria-label="Sell on Dukanen"><span className="mobile-sell-icon"><Icon name="plus"/></span><span>Sell</span></Link>
-      <Link href="/messages" className="mobile-nav-item"><Icon name="message"/><span>Messages</span></Link>
-      <Link href="/profile" className="mobile-nav-item"><Icon name="user"/><span>Profile</span></Link>
+      <Link href="/" className="mobile-nav-item"><Icon name="home"/><span>Home</span></Link><Link href="/marketplace" className="mobile-nav-item"><Icon name="search"/><span>Explore</span></Link><Link href="/sell" className="mobile-sell" aria-label="Sell on Dukanen"><span className="mobile-sell-icon"><Icon name="plus"/></span><span>Sell</span></Link><Link href="/messages" className="mobile-nav-item"><Icon name="message"/><span>Messages</span></Link><Link href="/profile" className="mobile-nav-item"><Icon name="user"/><span>Profile</span></Link>
     </nav>
   </body></html>
 }
