@@ -16,9 +16,9 @@ export default async function MessagesPage({searchParams}:{searchParams?:{conver
     .order('last_message_at',{ascending:false});
 
   const conversations=conversationRows||[];
-  const sellerIds=[...new Set(conversations.map((c:any)=>c.seller_id).filter(Boolean))];
-  const buyerIds=[...new Set(conversations.map((c:any)=>c.buyer_id).filter(Boolean))];
-  const productIds=[...new Set(conversations.map((c:any)=>c.product_id).filter(Boolean))];
+  const sellerIds=Array.from(new Set(conversations.map((c:any)=>c.seller_id).filter(Boolean)));
+  const buyerIds=Array.from(new Set(conversations.map((c:any)=>c.buyer_id).filter(Boolean)));
+  const productIds=Array.from(new Set(conversations.map((c:any)=>c.product_id).filter(Boolean)));
 
   const [{data:sellers},{data:buyers},{data:products}]=await Promise.all([
     sellerIds.length?supabase.from('sellers').select('id,store_name,user_id').in('id',sellerIds):Promise.resolve({data:[]} as any),
@@ -64,12 +64,12 @@ export default async function MessagesPage({searchParams}:{searchParams?:{conver
       <section className="chat-panel">
         {selected&&<>
           <header className="chat-header"><div><strong>{titleFor(selected)}</strong>{selectedProduct&&<Link href={`/product/${selectedProduct.slug}`}>{selectedProduct.title}</Link>}</div></header>
-          <div className="message-thread">
+          <div className="message-thread" aria-live="polite">
             {messages.length?messages.map((m:any)=><div key={m.id} className={`message-bubble ${m.sender_id===user.id?'mine':'theirs'}`}><p>{m.body}</p><small>{new Date(m.created_at).toLocaleString()}</small></div>):<div className="chat-empty">Start the conversation about this listing.</div>}
           </div>
           <form action={sendMessage} className="message-compose">
             <input type="hidden" name="conversationId" value={selected.id}/>
-            <textarea name="body" required maxLength={4000} rows={2} defaultValue={suggestion} placeholder="Write a message…"/>
+            <textarea name="body" aria-label="Message" required maxLength={4000} rows={2} defaultValue={suggestion} placeholder="Write a message…"/>
             <button type="submit" className="primary">Send</button>
           </form>
         </>}
