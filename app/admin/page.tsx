@@ -1,17 +1,18 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { hasSupabaseConfig } from '@/lib/supabase/config'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminPage() {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  if (!hasSupabaseConfig) {
     return (
       <section className="container market-header">
         <p className="eyebrow">Administration</p>
         <h1>Dukanen admin</h1>
         <div className="seller-box">
           <h3>Backend setup required</h3>
-          <p>Configure Supabase and run the database schema before the admin dashboard can load live marketplace data.</p>
+          <p>Configure Supabase before the admin dashboard can load marketplace data.</p>
         </div>
       </section>
     )
