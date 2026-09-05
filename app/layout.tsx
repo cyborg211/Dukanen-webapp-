@@ -3,11 +3,15 @@ import './sell.css';
 import './step8.css';
 import Link from 'next/link';
 
+const OFFICIAL_DUKANEN_ICON='https://raw.githubusercontent.com/bedpiny24/v0-dukanen-app/v0/bedpunk24-5959-a0916452-2/public/dukanen-icon.png';
+const OFFICIAL_DUKANEN_OG='https://raw.githubusercontent.com/bedpiny24/v0-dukanen-app/v0/bedpunk24-5959-a0916452-2/public/og-image.png';
+
 export const metadata = {
   title: {default:'Dukanen Marketplace — Buy. Sell. Connect.',template:'%s | Dukanen Marketplace'},
   description: 'A mobile-first local marketplace for products, services and opportunities across South Sudan.',
   metadataBase: new URL('https://dukanen.online'),
   alternates: { canonical: '/' },
+  icons:{icon:OFFICIAL_DUKANEN_ICON,apple:OFFICIAL_DUKANEN_ICON},
   openGraph: {
     title: 'Dukanen Marketplace',
     description: 'Buy. Sell. Connect. Built for local commerce across South Sudan.',
@@ -15,8 +19,9 @@ export const metadata = {
     siteName: 'Dukanen Marketplace',
     locale: 'en_SS',
     type: 'website',
+    images:[{url:OFFICIAL_DUKANEN_OG,alt:'Dukanen Marketplace'}],
   },
-  twitter:{card:'summary_large_image',title:'Dukanen Marketplace',description:'Buy. Sell. Connect. Built for local commerce across South Sudan.'},
+  twitter:{card:'summary_large_image',title:'Dukanen Marketplace',description:'Buy. Sell. Connect. Built for local commerce across South Sudan.',images:[OFFICIAL_DUKANEN_OG]},
 };
 
 export const viewport={themeColor:'#00A86B',colorScheme:'light'};
@@ -33,9 +38,7 @@ function Icon({name}:{name:'home'|'search'|'plus'|'message'|'user'|'heart'}){
 
 function BrandMark(){
   return <span className="brand-lockup" aria-label="Dukanen Marketplace">
-    <span className="brand-icon" aria-hidden="true">
-      <svg viewBox="0 0 64 64" role="img"><path fill="#fff" d="M14 17h36l-4.4 13.2c-.9 2.6-3.3 4.3-6 4.3-2.5 0-4.8-1.5-5.8-3.8-1 2.3-3.3 3.8-5.8 3.8s-4.8-1.5-5.8-3.8c-1 2.3-3.3 3.8-5.8 3.8-2.7 0-5.1-1.7-6-4.3L14 17Z"/><path fill="#fff" d="M18 35h28v17h-9V40H27v12h-9V35Z"/></svg>
-    </span>
+    <span className="brand-icon brand-icon-official" aria-hidden="true"><img src={OFFICIAL_DUKANEN_ICON} alt="" width="46" height="46"/></span>
     <span className="brand-copy"><strong>Dukanen</strong><span>Marketplace</span></span>
   </span>
 }
