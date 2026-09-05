@@ -14,21 +14,28 @@ export async function createListing(formData:FormData){
   const description=String(formData.get('description')||'').trim();
   const categoryName=String(formData.get('category')||'').trim();
   const price=Number(formData.get('price')||0);
-  const city=String(formData.get('location')||'Juba');
-  const condition=String(formData.get('condition')||'Used');
+  const city=String(formData.get('location')||'Juba').trim();
+  const condition=String(formData.get('condition')||'Used').trim();
   const negotiable=formData.get('negotiable')==='on';
   let imageUrls:string[]=[];
 
   try{
     const parsed=JSON.parse(String(formData.get('imageUrls')||'[]'));
-    if(Array.isArray(parsed)) imageUrls=parsed.filter((v)=>typeof v==='string'&&v.startsWith('http')).slice(0,10);
+    if(Array.isArray(parsed)) imageUrls=parsed.filter((v)=>typeof v==='string'&&/^https:\/\//.test(v)).slice(0,10);
   }catch{}
 
-  if(!title||!price||!categoryName||!description) redirect('/sell?error=missing');
+  if(!title||title.length>100||!Number.isFinite(price)||price<=0||!categoryName||!description||description.length>2000) redirect('/sell?error=missing');
+
+  const allowedConditions=new Set(['New','Used','Refurbished']);
+  if(!allowedConditions.has(condition)) redirect('/sell?error=condition');
+
+  const {data:category}=await supabase.from('categories').select('id').eq('name',categoryName).eq('active',true).maybeSingle();
+  if(!category?.id) redirect('/sell?error=category');
 
   let {data:seller}=await supabase.from('sellers').select('id').eq('user_id',user.id).maybeSingle();
   if(!seller){
-    const storeName=(user.user_metadata?.full_name||user.email?.split('@')[0]||'Dukanen Seller')+' Store';
+    const displayName=user.user_metadata?.name||user.user_metadata?.full_name||user.email?.split('@')[0]||'Dukanen Seller';
+    const storeName=`${displayName} Store`;
     const created=await supabase.from('sellers').insert({
       user_id:user.id,
       store_name:storeName,
@@ -40,11 +47,10 @@ export async function createListing(formData:FormData){
   }
   if(!seller) redirect('/sell?error=seller');
 
-  const {data:category}=await supabase.from('categories').select('id').eq('name',categoryName).maybeSingle();
   const slug=slugify(title);
   const {data:product,error}=await supabase.from('products').insert({
     seller_id:seller.id,
-    category_id:category?.id||null,
+    category_id:category.id,
     title,
     slug,
     description,
